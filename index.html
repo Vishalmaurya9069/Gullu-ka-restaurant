@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gullu ka Restaurant — North & South Indian Kitchen, Bengaluru</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --steel:#E7E4DD;
+    --steel-dark:#D3CFC4;
+    --charcoal:#211E1C;
+    --charcoal-soft:#4A453F;
+    --kumkum:#A6291F;
+    --kumkum-dark:#7E1D15;
+    --turmeric:#D9A441;
+    --leaf:#4C6B4F;
+    --plate:#FAF7F0;
+    --focus:#2B6CB0;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(33,30,28,0.055) 1.5px, transparent 0) 0 0/22px 22px,
+      var(--steel);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:'Baloo 2', sans-serif;
+    color:var(--charcoal);
+    margin:0;
+  }
+  a{color:inherit;}
+  :focus-visible{
+    outline:3px solid var(--focus);
+    outline-offset:2px;
+  }
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(231,228,221,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--steel-dark);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+    max-width:1080px; margin:0 auto;
+  }
+  .brand{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    display:flex; align-items:baseline; gap:6px;
+  }
+  .brand .amp{color:var(--kumkum);}
+  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
+  .nav-links a{
+    text-decoration:none;
+    font-weight:500;
+    font-size:0.95rem;
+    color:var(--charcoal-soft);
+    padding:6px 2px;
+    border-bottom:2px solid transparent;
+  }
+  .nav-links a:hover{border-bottom-color:var(--kumkum); color:var(--charcoal);}
+  .cart-btn{
+    background:var(--charcoal);
+    color:var(--plate);
+    border:none;
+    border-radius:999px;
+    padding:9px 18px;
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:0.9rem;
+    cursor:pointer;
+    display:flex; align-items:center; gap:8px;
+  }
+  .cart-btn:hover{background:var(--kumkum);}
+  .cart-count{
+    background:var(--turmeric);
+    color:var(--charcoal);
+    border-radius:999px;
+    min-width:20px; height:20px;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:0.75rem; font-weight:700;
+    padding:0 5px;
+  }
+  .menu-toggle{display:none; background:none; border:none; cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:64px 24px 40px;
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:40px;
+    align-items:center;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  .hero-eyebrow{
+    color:var(--kumkum);
+    font-weight:600;
+    font-size:0.95rem;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:3.1rem;
+    line-height:1.05;
+    font-weight:700;
+  }
+  .hero h1 .rasam{color:var(--leaf);}
+  .hero p.sub{
+    margin-top:18px;
+    font-size:1.1rem;
+    color:var(--charcoal-soft);
+    max-width:42ch;
+  }
+  .hero-ctas{
+    margin-top:28px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn-primary, .btn-secondary{
+    display:inline-block;
+    padding:13px 26px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:0.98rem;
+    text-decoration:none;
+    cursor:pointer;
+    border:2px solid transparent;
+  }
+  .btn-primary{background:var(--kumkum); color:var(--plate);}
+  .btn-primary:hover{background:var(--kumkum-dark);}
+  .btn-secondary{background:transparent; border-color:var(--charcoal); color:var(--charcoal);}
+  .btn-secondary:hover{background:var(--charcoal); color:var(--plate);}
+
+  .thali-wrap{display:flex; justify-content:center; position:relative;}
+  .thali-wrap svg{width:100%; max-width:380px; height:auto; position:relative; z-index:2;}
+  .steam{
+    position:absolute; z-index:1;
+    stroke:rgba(33,30,28,0.18);
+    stroke-width:4;
+    fill:none;
+    stroke-linecap:round;
+  }
+  .steam path{
+    animation:rise 4.5s ease-in-out infinite;
+    transform-origin:center bottom;
+  }
+  .steam path:nth-child(2){animation-delay:0.8s;}
+  .steam path:nth-child(3){animation-delay:1.6s;}
+  @keyframes rise{
+    0%{opacity:0; transform:translateY(0) scaleY(0.8);}
+    30%{opacity:1;}
+    100%{opacity:0; transform:translateY(-26px) scaleY(1.15);}
+  }
+
+  /* ---------- POPULAR DISHES ---------- */
+  .picks{padding:56px 24px 20px;}
+  .picks-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+    margin-top:34px;
+  }
+  .pick{
+    background:var(--plate);
+    border:1px solid var(--steel-dark);
+    padding:26px 20px 22px;
+    text-align:center;
+  }
+  .pick:nth-child(1), .pick:nth-child(4){border-radius:28px 8px 28px 8px;}
+  .pick:nth-child(2), .pick:nth-child(5){border-radius:8px;}
+  .pick:nth-child(3), .pick:nth-child(6){border-radius:8px 28px 8px 28px;}
+  .pick-badge{
+    width:78px; height:78px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .pick-badge svg{width:44px; height:44px;}
+  .pick h3{font-size:1.08rem; margin-bottom:4px;}
+  .pick p{margin:0; font-size:0.86rem; color:var(--charcoal-soft);}
+  .pick .tag{
+    display:inline-block;
+    margin-top:10px;
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.02em;
+    padding:3px 10px;
+    border-radius:999px;
+  }
+  .tag.north{background:#F3E1DE; color:var(--kumkum-dark);}
+  .tag.south{background:#E2E9DF; color:var(--leaf);}
+
+  .divider{
+    display:flex; justify-content:center; padding:8px 0 0;
+  }
+  .divider svg{width:180px; height:16px; opacity:0.5;}
+
+  /* ---------- ABOUT STRIP ---------- */
+  .about-strip{
+    background:var(--charcoal);
+    color:var(--plate);
+    padding:36px 24px;
+  }
+  .about-strip .wrap{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+    text-align:left;
+  }
+  .about-item .num{
+    font-family:'Baloo 2', sans-serif;
+    color:var(--turmeric);
+    font-size:1.6rem;
+    font-weight:700;
+    display:block;
+  }
+  .about-item p{margin:4px 0 0; color:#C9C4BA; font-size:0.92rem;}
+
+  /* ---------- MENU ---------- */
+  .menu-section{padding:70px 24px 40px;}
+  .section-head{max-width:560px; margin-bottom:36px;}
+  .section-head h2{font-size:2.2rem;}
+  .section-head p{color:var(--charcoal-soft); margin-top:10px;}
+
+  .tabs{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    margin-bottom:30px;
+    scrollbar-width:thin;
+  }
+  .tab{
+    flex:0 0 auto;
+    background:var(--plate);
+    border:1px solid var(--steel-dark);
+    padding:9px 18px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:0.88rem;
+    cursor:pointer;
+    color:var(--charcoal-soft);
+    white-space:nowrap;
+  }
+  .tab.active{background:var(--charcoal); color:var(--plate); border-color:var(--charcoal);}
+
+  .menu-list{border-top:1px solid var(--steel-dark);}
+  .menu-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto;
+    gap:16px;
+    align-items:center;
+    padding:18px 4px;
+    border-bottom:1px solid var(--steel-dark);
+  }
+  .veg-mark{
+    width:16px; height:16px;
+    border:2px solid var(--leaf);
+    display:flex; align-items:center; justify-content:center;
+    border-radius:3px;
+    flex:0 0 auto;
+  }
+  .veg-mark.nonveg{border-color:var(--kumkum);}
+  .veg-mark::after{
+    content:"";
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--leaf);
+  }
+  .veg-mark.nonveg::after{background:var(--kumkum); border-radius:0; clip-path:polygon(50% 0,100% 100%,0 100%);}
+  .item-name{font-weight:600; font-size:1.02rem;}
+  .item-cat{display:block; font-size:0.8rem; color:var(--charcoal-soft); font-weight:400; margin-top:2px;}
+  .item-price{font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .add-btn{
+    background:var(--plate);
+    border:1.5px solid var(--charcoal);
+    color:var(--charcoal);
+    width:34px; height:34px;
+    border-radius:50%;
+    font-size:1.2rem;
+    cursor:pointer;
+    line-height:1;
+  }
+  .add-btn:hover{background:var(--charcoal); color:var(--plate);}
+
+  /* ---------- VISIT ---------- */
+  .visit{
+    background:var(--plate);
+    padding:64px 24px;
+    border-top:1px solid var(--steel-dark);
+    border-bottom:1px solid var(--steel-dark);
+  }
+  .visit .wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+  }
+  .visit h2{font-size:2rem; margin-bottom:16px;}
+  .visit-detail{margin-bottom:16px;}
+  .visit-detail .label{
+    font-size:0.8rem;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--charcoal-soft);
+    font-weight:600;
+  }
+  .visit-detail .val{font-size:1.05rem; margin-top:2px;}
+  .qr-box{
+    background:var(--steel);
+    border:1px dashed var(--charcoal-soft);
+    border-radius:12px;
+    padding:24px;
+    text-align:center;
+    align-self:start;
+  }
+  .qr-box svg{width:140px; height:140px;}
+  .qr-box p{font-size:0.85rem; color:var(--charcoal-soft); margin-top:12px;}
+
+  footer{
+    background:var(--charcoal);
+    color:#B8B3A8;
+    text-align:center;
+    padding:24px;
+    font-size:0.85rem;
+  }
+
+  /* ---------- CART DRAWER ---------- */
+  .cart-drawer{
+    position:fixed; top:0; right:0; height:100%;
+    width:min(380px, 100%);
+    background:var(--plate);
+    box-shadow:-8px 0 24px rgba(0,0,0,0.15);
+    transform:translateX(100%);
+    transition:transform 0.25s ease;
+    z-index:100;
+    display:flex; flex-direction:column;
+  }
+  .cart-drawer.open{transform:translateX(0);}
+  .cart-head{
+    padding:20px 22px;
+    border-bottom:1px solid var(--steel-dark);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .cart-head h3{font-size:1.3rem;}
+  .cart-close{background:none; border:none; font-size:1.4rem; cursor:pointer;}
+  .cart-items{flex:1; overflow-y:auto; padding:14px 22px;}
+  .cart-line{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0; border-bottom:1px solid var(--steel-dark);
+    font-size:0.94rem;
+  }
+  .cart-line .qty-ctrl{display:flex; align-items:center; gap:8px;}
+  .qty-ctrl button{
+    width:24px; height:24px; border-radius:50%;
+    border:1px solid var(--charcoal-soft); background:var(--plate);
+    cursor:pointer; font-size:0.9rem; line-height:1;
+  }
+  .cart-empty{color:var(--charcoal-soft); padding:30px 0; text-align:center; font-size:0.92rem;}
+  .cart-footer{
+    padding:18px 22px 22px;
+    border-top:1px solid var(--steel-dark);
+  }
+  .cart-total{
+    display:flex; justify-content:space-between;
+    font-weight:700; font-size:1.1rem;
+    margin-bottom:14px;
+  }
+  .scrim{
+    position:fixed; inset:0; background:rgba(33,30,28,0.4);
+    opacity:0; pointer-events:none; transition:opacity 0.2s ease;
+    z-index:90;
+  }
+  .scrim.show{opacity:1; pointer-events:auto;}
+
+  @media (max-width: 760px){
+    .hero{grid-template-columns:1fr; padding-top:36px;}
+    .hero h1{font-size:2.3rem;}
+    .thali-wrap{order:-1; max-width:220px; margin:0 auto;}
+    .nav-links{display:none;}
+    .about-strip .wrap{grid-template-columns:1fr; text-align:center;}
+    .visit .wrap{grid-template-columns:1fr;}
+    .menu-row{grid-template-columns:auto 1fr auto; row-gap:6px;}
+    .menu-row .add-btn{grid-column:3; grid-row:1 / 3;}
+    .picks-grid{grid-template-columns:repeat(2, 1fr); gap:14px;}
+    .pick{padding:20px 12px 18px;}
+    .pick-badge{width:64px; height:64px;}
+    .pick-badge svg{width:36px; height:36px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Gullu ka <span class="amp">Restaurant</span></div>
+    <ul class="nav-links">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#visit">Visit Us</a></li>
+    </ul>
+    <button class="cart-btn" id="cartOpenBtn" aria-haspopup="dialog">
+      Your Order <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Bengaluru · North &amp; South Indian Kitchen</div>
+    <h1>Gullu ka<br><span class="rasam">Restaurant.</span></h1>
+    <p class="sub">North Indian ka comfort, South Indian ka sukoon — ek hi thali mein. Everyday food, cooked fresh, served honestly.</p>
+    <div class="hero-ctas">
+      <a href="#menu" class="btn-primary">View Full Menu</a>
+      <a href="#visit" class="btn-secondary">Visit Us</a>
+    </div>
+  </div>
+  <div class="thali-wrap" aria-hidden="true">
+    <svg class="steam" viewBox="0 0 300 300" style="position:absolute; top:-30px; left:0;">
+      <path d="M118 90 Q112 70 122 55 Q132 40 124 20"/>
+      <path d="M150 84 Q144 64 154 49 Q164 34 156 14"/>
+      <path d="M182 90 Q176 70 186 55 Q196 40 188 20"/>
+    </svg>
+    <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="150" cy="150" r="140" fill="#F2EFE8" stroke="#C9C4BA" stroke-width="3"/>
+      <circle cx="150" cy="150" r="140" fill="none" stroke="#D3CFC4" stroke-width="1"/>
+      <circle cx="150" cy="150" r="72" fill="#FAF7F0" stroke="#D3CFC4" stroke-width="2"/>
+      <circle cx="80" cy="80" r="30" fill="#FAF7F0" stroke="#D3CFC4" stroke-width="2"/>
+      <circle cx="222" cy="82" r="26" fill="#FAF7F0" stroke="#D3CFC4" stroke-width="2"/>
+      <circle cx="88" cy="222" r="24" fill="#FAF7F0" stroke="#D3CFC4" stroke-width="2"/>
+      <circle cx="228" cy="220" r="28" fill="#FAF7F0" stroke="#D3CFC4" stroke-width="2"/>
+      <circle cx="150" cy="150" r="34" fill="#D9A441" opacity="0.9"/>
+      <circle cx="80" cy="80" r="13" fill="#A6291F" opacity="0.85"/>
+      <circle cx="222" cy="82" r="11" fill="#4C6B4F" opacity="0.85"/>
+      <circle cx="88" cy="222" r="10" fill="#4C6B4F" opacity="0.85"/>
+      <circle cx="228" cy="220" r="12" fill="#A6291F" opacity="0.85"/>
+    </svg>
+  </div>
+</section>
+
+<section class="about-strip">
+  <div class="wrap">
+    <div class="about-item"><span class="num">45+</span><p>dishes across North &amp; South Indian favourites</p></div>
+    <div class="about-item"><span class="num">100%</span><p>fresh, made-to-order — no pre-fried holding trays</p></div>
+    <div class="about-item"><span class="num">2</span><p>kitchens, one menu — Punjabi tadka meets Udupi filter coffee</p></div>
+  </div>
+</section>
+
+<section class="picks">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What People Order First</h2>
+      <p>A few dishes that show up on almost every table — one plate to try each kitchen.</p>
+    </div>
+    <div class="picks-grid">
+
+      <div class="pick">
+        <div class="pick-badge" style="background:#F3E1DE;">
+          <svg viewBox="0 0 48 48"><path d="M8 26c0-9 7-16 16-16s16 7 16 16" fill="none" stroke="#A6291F" stroke-width="3" stroke-linecap="round"/><path d="M6 26h36" stroke="#A6291F" stroke-width="3" stroke-linecap="round"/><path d="M10 30c2 6 8 10 14 10s12-4 14-10" fill="none" stroke="#A6291F" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Butter Chicken</h3>
+        <p>Tomato-cashew gravy, slow-simmered</p>
+        <span class="tag north">North Indian</span>
+      </div>
+
+      <div class="pick">
+        <div class="pick-badge" style="background:#EFE3C6;">
+          <svg viewBox="0 0 48 48"><path d="M6 30c0-4 9-8 18-8s18 4 18 8" fill="none" stroke="#B9822C" stroke-width="3" stroke-linecap="round"/><path d="M9 30c1-10 6-18 15-20 9 2 14 10 15 20" fill="none" stroke="#B9822C" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Masala Dosa</h3>
+        <p>Crisp rice crepe, spiced potato filling</p>
+        <span class="tag south">South Indian</span>
+      </div>
+
+      <div class="pick">
+        <div class="pick-badge" style="background:#F3E1DE;">
+          <svg viewBox="0 0 48 48"><rect x="10" y="10" width="6" height="6" rx="2" fill="#A6291F"/><rect x="21" y="10" width="6" height="6" rx="2" fill="#7E1D15"/><rect x="32" y="10" width="6" height="6" rx="2" fill="#A6291F"/><line x1="24" y1="16" x2="24" y2="38" stroke="#A6291F" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Paneer Tikka</h3>
+        <p>Char-grilled on the skewer, smoky masala</p>
+        <span class="tag north">North Indian</span>
+      </div>
+
+      <div class="pick">
+        <div class="pick-badge" style="background:#EFE3C6;">
+          <svg viewBox="0 0 48 48"><path d="M10 36c0-14 6-22 14-22s14 8 14 22" fill="none" stroke="#B9822C" stroke-width="3" stroke-linecap="round"/><line x1="8" y1="36" x2="40" y2="36" stroke="#B9822C" stroke-width="3" stroke-linecap="round"/><line x1="14" y1="24" x2="34" y2="24" stroke="#B9822C" stroke-width="2.5" stroke-linecap="round"/><line x1="12" y1="30" x2="36" y2="30" stroke="#B9822C" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Chicken Biryani</h3>
+        <p>Layered rice, dum-cooked with whole spice</p>
+        <span class="tag south">Rice &amp; Biryani</span>
+      </div>
+
+      <div class="pick">
+        <div class="pick-badge" style="background:#E2E9DF;">
+          <svg viewBox="0 0 48 48"><path d="M14 20h14l-2 16a5 5 0 01-5 4h0a5 5 0 01-5-4l-2-16z" fill="none" stroke="#4C6B4F" stroke-width="3" stroke-linejoin="round"/><path d="M28 22c4 0 7 2 7 5s-3 5-7 5" fill="none" stroke="#4C6B4F" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Filter Coffee</h3>
+        <p>Tumbler-davara style, strong and frothy</p>
+        <span class="tag south">South Indian</span>
+      </div>
+
+      <div class="pick">
+        <div class="pick-badge" style="background:#EFE3C6;">
+          <svg viewBox="0 0 48 48"><circle cx="18" cy="26" r="7" fill="none" stroke="#B9822C" stroke-width="3"/><circle cx="30" cy="26" r="7" fill="none" stroke="#B9822C" stroke-width="3"/><path d="M8 34h32" stroke="#B9822C" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Gulab Jamun</h3>
+        <p>Warm, soaked in cardamom syrup</p>
+        <span class="tag north">Dessert</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider" aria-hidden="true">
+  <svg viewBox="0 0 180 16"><path d="M0 8h60" stroke="#211E1C" stroke-width="1.5"/><circle cx="90" cy="8" r="4" fill="#D9A441"/><path d="M120 8h60" stroke="#211E1C" stroke-width="1.5"/></svg>
+</div>
+
+<section class="menu-section" id="menu">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The Menu</h2>
+      <p>Tap a category to filter, tap + to build your order — we'll send it to us on WhatsApp when you're ready.</p>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="menu-list" id="menuList"></div>
+  </div>
+</section>
+
+<section class="visit" id="visit">
+  <div class="wrap">
+    <div>
+      <h2>Visit Us</h2>
+      <div class="visit-detail">
+        <div class="label">Address</div>
+        <div class="val">123, 100 Feet Road, Indiranagar, Bengaluru — 560038<br><em style="color:var(--charcoal-soft); font-style:normal; font-size:0.85rem;">(sample address — swap in your real location)</em></div>
+      </div>
+      <div class="visit-detail">
+        <div class="label">Hours</div>
+        <div class="val">11:30 AM – 11:00 PM, all days</div>
+      </div>
+      <div class="visit-detail">
+        <div class="label">Phone</div>
+        <div class="val">+91 90000 00000</div>
+      </div>
+    </div>
+    <div class="qr-box">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sample QR code placeholder">
+        <rect width="100" height="100" fill="#FAF7F0"/>
+        <g fill="#211E1C">
+          <rect x="6" y="6" width="24" height="24"/><rect x="12" y="12" width="12" height="12" fill="#FAF7F0"/>
+          <rect x="70" y="6" width="24" height="24"/><rect x="76" y="12" width="12" height="12" fill="#FAF7F0"/>
+          <rect x="6" y="70" width="24" height="24"/><rect x="12" y="76" width="12" height="12" fill="#FAF7F0"/>
+          <rect x="40" y="6" width="6" height="6"/><rect x="52" y="6" width="6" height="6"/>
+          <rect x="40" y="40" width="6" height="6"/><rect x="52" y="40" width="6" height="6"/>
+          <rect x="40" y="52" width="6" height="6"/><rect x="64" y="52" width="6" height="6"/>
+          <rect x="76" y="40" width="6" height="6"/><rect x="88" y="40" width="6" height="6"/>
+          <rect x="40" y="76" width="6" height="6"/><rect x="52" y="88" width="6" height="6"/>
+          <rect x="70" y="70" width="6" height="6"/><rect x="82" y="82" width="12" height="12"/>
+          <rect x="34" y="34" width="6" height="6"/><rect x="34" y="60" width="6" height="6"/>
+          <rect x="60" y="34" width="6" height="6"/><rect x="60" y="64" width="6" height="6"/>
+        </g>
+      </svg>
+      <p>Scan this at your table to reopen the menu on your phone.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Gullu ka Restaurant · Bengaluru · Portfolio demo site — replace sample details with your restaurant's own
+</footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-label="Your order">
+  <div class="cart-head">
+    <h3>Your Order</h3>
+    <button class="cart-close" id="cartCloseBtn" aria-label="Close order panel">×</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+    <a class="btn-primary" style="display:block; text-align:center; width:100%;" id="whatsappBtn" target="_blank" rel="noopener">Send Order on WhatsApp</a>
+  </div>
+</aside>
+
+<script>
+  const MENU = [
+    {cat:"Starters & Snacks", name:"Veg Manchurian", price:160, veg:true},
+    {cat:"Starters & Snacks", name:"Paneer Tikka", price:220, veg:true},
+    {cat:"Starters & Snacks", name:"Chicken 65", price:240, veg:false},
+    {cat:"Starters & Snacks", name:"Chilli Chicken", price:250, veg:false},
+    {cat:"Starters & Snacks", name:"Soya Chaap Tikka", price:190, veg:true},
+
+    {cat:"North Indian - Veg Mains", name:"Dal Makhani", price:180, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Rajma Chawal", price:130, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Kadai Paneer", price:240, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Palak Paneer", price:220, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Dum Aloo", price:170, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Chole Bhature", price:150, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Mix Veg Curry", price:170, veg:true},
+    {cat:"North Indian - Veg Mains", name:"Malai Kofta", price:220, veg:true},
+
+    {cat:"North Indian - Non-Veg Mains", name:"Butter Chicken", price:280, veg:false},
+    {cat:"North Indian - Non-Veg Mains", name:"Chicken Curry", price:260, veg:false},
+    {cat:"North Indian - Non-Veg Mains", name:"Mutton Rogan Josh", price:340, veg:false},
+    {cat:"North Indian - Non-Veg Mains", name:"Egg Curry", price:160, veg:false},
+
+    {cat:"Breads", name:"Tawa Roti", price:25, veg:true},
+    {cat:"Breads", name:"Butter Naan", price:45, veg:true},
+    {cat:"Breads", name:"Garlic Naan", price:60, veg:true},
+    {cat:"Breads", name:"Lachha Paratha", price:55, veg:true},
+
+    {cat:"Rice & Biryani", name:"Jeera Rice", price:130, veg:true},
+    {cat:"Rice & Biryani", name:"Veg Pulao", price:160, veg:true},
+    {cat:"Rice & Biryani", name:"Veg Biryani", price:190, veg:true},
+    {cat:"Rice & Biryani", name:"Chicken Biryani", price:250, veg:false},
+    {cat:"Rice & Biryani", name:"Egg Biryani", price:190, veg:false},
+
+    {cat:"South Indian - Tiffin", name:"Plain Dosa", price:90, veg:true},
+    {cat:"South Indian - Tiffin", name:"Masala Dosa", price:120, veg:true},
+    {cat:"South Indian - Tiffin", name:"Rava Dosa", price:140, veg:true},
+    {cat:"South Indian - Tiffin", name:"Idli (2 pcs)", price:70, veg:true},
+    {cat:"South Indian - Tiffin", name:"Medu Vada (2 pcs)", price:80, veg:true},
+    {cat:"South Indian - Tiffin", name:"Uttapam", price:130, veg:true},
+    {cat:"South Indian - Tiffin", name:"Pongal", price:100, veg:true},
+
+    {cat:"South Indian - Mains", name:"Sambar Rice", price:130, veg:true},
+    {cat:"South Indian - Mains", name:"Curd Rice", price:110, veg:true},
+    {cat:"South Indian - Mains", name:"Bisi Bele Bath", price:150, veg:true},
+    {cat:"South Indian - Mains", name:"Chettinad Chicken Curry", price:270, veg:false},
+
+    {cat:"Beverages", name:"Filter Coffee", price:40, veg:true},
+    {cat:"Beverages", name:"Masala Chai", price:30, veg:true},
+    {cat:"Beverages", name:"Sweet Lassi", price:70, veg:true},
+    {cat:"Beverages", name:"Fresh Lime Soda", price:60, veg:true},
+    {cat:"Beverages", name:"Buttermilk (Chaas)", price:40, veg:true},
+
+    {cat:"Desserts", name:"Gulab Jamun (2 pcs)", price:70, veg:true},
+    {cat:"Desserts", name:"Gajar Ka Halwa", price:90, veg:true},
+    {cat:"Desserts", name:"Payasam", price:80, veg:true},
+  ];
+
+  // Restaurant WhatsApp number for order messages — update to the real business number.
+  const RESTAURANT_WHATSAPP = "919000000000";
+
+  const categories = ["All", ...new Set(MENU.map(i => i.cat))];
+  const tabsEl = document.getElementById('tabs');
+  const listEl = document.getElementById('menuList');
+  let activeCat = "All";
+  let cart = {}; // name -> {price, qty}
+
+  function renderTabs(){
+    tabsEl.innerHTML = categories.map(c =>
+      `<button class="tab ${c===activeCat?'active':''}" data-cat="${c}">${c}</button>`
+    ).join('');
+    tabsEl.querySelectorAll('.tab').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        activeCat = btn.dataset.cat;
+        renderTabs();
+        renderList();
+      });
+    });
+  }
+
+  function renderList(){
+    const items = MENU.filter(i => activeCat === "All" || i.cat === activeCat);
+    listEl.innerHTML = items.map(i => `
+      <div class="menu-row">
+        <span class="veg-mark ${i.veg ? '' : 'nonveg'}" title="${i.veg ? 'Veg' : 'Non-Veg'}"></span>
+        <div>
+          <span class="item-name">${i.name}</span>
+          <span class="item-cat">${i.cat}</span>
+        </div>
+        <span class="item-price">₹${i.price}</span>
+        <button class="add-btn" data-name="${i.name}" data-price="${i.price}" aria-label="Add ${i.name} to order">+</button>
+      </div>
+    `).join('');
+    listEl.querySelectorAll('.add-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        addToCart(btn.dataset.name, Number(btn.dataset.price));
+        openCart();
+      });
+    });
+  }
+
+  function addToCart(name, price){
+    if(!cart[name]) cart[name] = {price, qty:0};
+    cart[name].qty += 1;
+    renderCart();
+  }
+  function changeQty(name, delta){
+    if(!cart[name]) return;
+    cart[name].qty += delta;
+    if(cart[name].qty <= 0) delete cart[name];
+    renderCart();
+  }
+
+  function renderCart(){
+    const names = Object.keys(cart);
+    const cartItemsEl = document.getElementById('cartItems');
+    const totalEl = document.getElementById('cartTotal');
+    const countEl = document.getElementById('cartCount');
+    const waBtn = document.getElementById('whatsappBtn');
+
+    let totalQty = 0, totalPrice = 0;
+    names.forEach(n => { totalQty += cart[n].qty; totalPrice += cart[n].qty * cart[n].price; });
+
+    countEl.textContent = totalQty;
+    totalEl.textContent = "₹" + totalPrice;
+
+    if(names.length === 0){
+      cartItemsEl.innerHTML = `<div class="cart-empty">Your order is empty.<br>Tap + next to any dish to add it.</div>`;
+    } else {
+      cartItemsEl.innerHTML = names.map(n => `
+        <div class="cart-line">
+          <span>${n}</span>
+          <div class="qty-ctrl">
+            <button data-name="${n}" data-delta="-1" aria-label="Decrease ${n}">−</button>
+            <span>${cart[n].qty}</span>
+            <button data-name="${n}" data-delta="1" aria-label="Increase ${n}">+</button>
+          </div>
+          <span>₹${cart[n].qty * cart[n].price}</span>
+        </div>
+      `).join('');
+      cartItemsEl.querySelectorAll('.qty-ctrl button').forEach(b=>{
+        b.addEventListener('click', ()=> changeQty(b.dataset.name, Number(b.dataset.delta)));
+      });
+    }
+
+    const lines = names.map(n => `${n} x${cart[n].qty} - ₹${cart[n].qty*cart[n].price}`).join('%0A');
+    const msg = names.length
+      ? `Hi Gullu ka Restaurant, I'd like to order:%0A${lines}%0A%0ATotal: ₹${totalPrice}`
+      : `Hi Gullu ka Restaurant, I'd like to place an order.`;
+    waBtn.href = `https://wa.me/${RESTAURANT_WHATSAPP}?text=${msg}`;
+  }
+
+  function openCart(){
+    document.getElementById('cartDrawer').classList.add('open');
+    document.getElementById('scrim').classList.add('show');
+  }
+  function closeCart(){
+    document.getElementById('cartDrawer').classList.remove('open');
+    document.getElementById('scrim').classList.remove('show');
+  }
+
+  document.getElementById('cartOpenBtn').addEventListener('click', openCart);
+  document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+  document.getElementById('scrim').addEventListener('click', closeCart);
+
+  renderTabs();
+  renderList();
+  renderCart();
+</script>
+
+</body>
+</html>
