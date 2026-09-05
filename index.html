@@ -217,6 +217,66 @@
   }
   .divider svg{width:180px; height:16px; opacity:0.5;}
 
+  /* ---------- RATE US ---------- */
+  .rate-section{
+    background:var(--steel);
+    padding:60px 24px;
+    text-align:center;
+  }
+  .rate-section .section-head{margin:0 auto 28px; text-align:center;}
+  .stars{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .star-btn{
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:4px;
+    line-height:1;
+  }
+  .star-btn svg{width:38px; height:38px;}
+  .rate-form{
+    max-width:460px;
+    margin:0 auto;
+  }
+  .rate-form textarea{
+    width:100%;
+    min-height:90px;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid var(--steel-dark);
+    background:var(--plate);
+    font-family:'Work Sans', sans-serif;
+    font-size:0.95rem;
+    resize:vertical;
+    margin-bottom:16px;
+  }
+  .rate-actions{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .btn-google{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:13px 22px;
+    border-radius:8px;
+    font-weight:600;
+    font-size:0.95rem;
+    text-decoration:none;
+    background:var(--plate);
+    border:1.5px solid var(--charcoal);
+    color:var(--charcoal);
+    cursor:pointer;
+  }
+  .btn-google:hover{background:var(--charcoal); color:var(--plate);}
+  .rate-hint{font-size:0.82rem; color:var(--charcoal-soft); margin-top:14px;}
+
   /* ---------- ABOUT STRIP ---------- */
   .about-strip{
     background:var(--charcoal);
@@ -417,6 +477,7 @@
     <div class="brand">Gullu ka <span class="amp">Restaurant</span></div>
     <ul class="nav-links">
       <li><a href="#menu">Menu</a></li>
+      <li><a href="#rate">Rate Us</a></li>
       <li><a href="#visit">Visit Us</a></li>
     </ul>
     <button class="cart-btn" id="cartOpenBtn" aria-haspopup="dialog">
@@ -568,6 +629,33 @@
       <img src="data:image/png;base64,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" alt="QR code linking to this menu" style="width:140px; height:140px; display:block; margin:0 auto;">
       <p>Scan this at your table to reopen the menu on your phone.</p>
     </div>
+  </div>
+</section>
+
+<section class="rate-section" id="rate">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How Was Your Meal?</h2>
+      <p>Tap to rate, tell us what to fix — or drop a public review to help others find us.</p>
+    </div>
+    <div class="stars" id="stars">
+      <button class="star-btn" data-val="1" aria-label="Rate 1 star"><svg viewBox="0 0 24 24" fill="none" stroke="#4A453F" stroke-width="1.5"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.2l7.1-.6z"/></svg></button>
+      <button class="star-btn" data-val="2" aria-label="Rate 2 stars"><svg viewBox="0 0 24 24" fill="none" stroke="#4A453F" stroke-width="1.5"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.2l7.1-.6z"/></svg></button>
+      <button class="star-btn" data-val="3" aria-label="Rate 3 stars"><svg viewBox="0 0 24 24" fill="none" stroke="#4A453F" stroke-width="1.5"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.2l7.1-.6z"/></svg></button>
+      <button class="star-btn" data-val="4" aria-label="Rate 4 stars"><svg viewBox="0 0 24 24" fill="none" stroke="#4A453F" stroke-width="1.5"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.2l7.1-.6z"/></svg></button>
+      <button class="star-btn" data-val="5" aria-label="Rate 5 stars"><svg viewBox="0 0 24 24" fill="none" stroke="#4A453F" stroke-width="1.5"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.9-6.3 3.9 1.7-7L2 9.2l7.1-.6z"/></svg></button>
+    </div>
+    <div class="rate-form">
+      <textarea id="rateComment" placeholder="Anything you'd like to tell us? (optional)"></textarea>
+      <div class="rate-actions">
+        <a class="btn-primary" id="sendFeedbackBtn" target="_blank" rel="noopener">Send Feedback on WhatsApp</a>
+        <a class="btn-google" id="googleReviewBtn" href="https://g.page/r/REPLACE-WITH-YOUR-PLACE-ID/review" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4A453F" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6l5.25 3.15.75-1.23-4-2.42V7z"/></svg>
+          Rate us on Google
+        </a>
+      </div>
+    </div>
+    <p class="rate-hint">(Sample Google review link above — swap in your restaurant's real link once you set up a Google Business Profile.)</p>
   </div>
 </section>
 
@@ -761,6 +849,44 @@
   document.getElementById('cartOpenBtn').addEventListener('click', openCart);
   document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
   document.getElementById('scrim').addEventListener('click', closeCart);
+
+  // ---------- RATE US ----------
+  let selectedStars = 0;
+  const starBtns = document.querySelectorAll('.star-btn');
+  const rateComment = document.getElementById('rateComment');
+  const sendFeedbackBtn = document.getElementById('sendFeedbackBtn');
+
+  function paintStars(){
+    starBtns.forEach(btn=>{
+      const val = Number(btn.dataset.val);
+      const path = btn.querySelector('path');
+      if(val <= selectedStars){
+        path.setAttribute('fill', '#D9A441');
+        path.setAttribute('stroke', '#D9A441');
+      } else {
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#4A453F');
+      }
+    });
+  }
+
+  function updateFeedbackLink(){
+    const comment = rateComment.value.trim();
+    const starText = selectedStars > 0 ? `${selectedStars}/5 stars` : 'no rating selected';
+    let msg = `Hi Gullu ka Restaurant, feedback on my visit: ${starText}.`;
+    if(comment) msg += ` ${comment}`;
+    sendFeedbackBtn.href = `https://wa.me/${RESTAURANT_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  }
+
+  starBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      selectedStars = Number(btn.dataset.val);
+      paintStars();
+      updateFeedbackLink();
+    });
+  });
+  rateComment.addEventListener('input', updateFeedbackLink);
+  updateFeedbackLink();
 
   renderTabs();
   renderList();
