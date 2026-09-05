@@ -663,19 +663,29 @@
   // Restaurant WhatsApp number for order messages — update to the real business number.
   const RESTAURANT_WHATSAPP = "918368708768";
 
-  const categories = ["All", ...new Set(MENU.map(i => i.cat))];
+  const categories = [...new Set(MENU.map(i => i.cat))];
   const tabsEl = document.getElementById('tabs');
   const listEl = document.getElementById('menuList');
-  let activeCat = "All";
+  let activeCats = new Set(); // empty set = show all
   let cart = {}; // name -> {price, qty}
 
   function renderTabs(){
-    tabsEl.innerHTML = categories.map(c =>
-      `<button class="tab ${c===activeCat?'active':''}" data-cat="${c}">${c}</button>`
-    ).join('');
+    const allActive = activeCats.size === 0;
+    tabsEl.innerHTML =
+      `<button class="tab ${allActive?'active':''}" data-cat="All">All</button>` +
+      categories.map(c =>
+        `<button class="tab ${activeCats.has(c)?'active':''}" data-cat="${c}">${c}</button>`
+      ).join('');
     tabsEl.querySelectorAll('.tab').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        activeCat = btn.dataset.cat;
+        const cat = btn.dataset.cat;
+        if(cat === "All"){
+          activeCats.clear();
+        } else if(activeCats.has(cat)){
+          activeCats.delete(cat);
+        } else {
+          activeCats.add(cat);
+        }
         renderTabs();
         renderList();
       });
@@ -683,7 +693,7 @@
   }
 
   function renderList(){
-    const items = MENU.filter(i => activeCat === "All" || i.cat === activeCat);
+    const items = MENU.filter(i => activeCats.size === 0 || activeCats.has(i.cat));
     listEl.innerHTML = items.map(i => `
       <div class="menu-row">
         <span class="veg-mark ${i.veg ? '' : 'nonveg'}" title="${i.veg ? 'Veg' : 'Non-Veg'}"></span>
