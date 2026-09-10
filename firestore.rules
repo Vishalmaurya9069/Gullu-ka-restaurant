@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /orders/{orderId} {
+      // Anyone (customers, anonymous) can create a new order — needed for the
+      // public ordering website. They cannot overwrite an existing order.
+      allow create: if request.resource.data.status == 'New';
+
+      // Only signed-in staff (anyone who can log into the dashboard) can
+      // read the order list or update a status.
+      allow read, update: if request.auth != null;
+
+      // Nobody can delete orders from the client.
+      allow delete: if false;
+    }
+  }
+}
