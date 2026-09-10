@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gullu ka Restaurant — Live Restaurant Dashboard</title>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#f6f2e9;color:#262321}
+header{background:#262321;color:#fff;padding:22px}
+header h1{margin:0 0 6px}.live{font-size:.9rem;opacity:.8}
+.header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+#logoutBtn{background:#4a453f;color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:700}
+.login-wrap{max-width:360px;margin:80px auto;background:#fff;border-radius:14px;padding:28px;box-shadow:0 5px 18px #00000012}
+.login-wrap h2{margin-top:0}
+.login-wrap label{display:block;font-size:.85rem;font-weight:700;margin:14px 0 6px}
+.login-wrap input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #ddd2c5;border-radius:8px;font-size:1rem}
+.login-wrap button{margin-top:18px;width:100%;background:#262321;color:#fff;border:0;border-radius:8px;padding:12px;font-weight:700;cursor:pointer}
+.login-error{color:#a6291f;font-size:.85rem;margin-top:10px;min-height:1.2em}
+main{max-width:1150px;margin:auto;padding:24px}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:700}
+.refresh{background:#eee}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:18px;margin-top:20px}
+.card{background:#fff;border:1px solid #ddd2c5;border-radius:14px;padding:18px;box-shadow:0 5px 18px #00000012}
+.status{display:inline-block;padding:6px 10px;border-radius:999px;background:#eee;margin:5px 0 12px;font-weight:700}
+.status.New{background:#fff0d6}.status.Confirmed{background:#e7f0ff}.status.Preparing{background:#fff5c7}.status.Ready{background:#dff4e4}.status.Completed{background:#e7e7e7}
+.items{border-top:1px solid #eee;margin-top:12px;padding-top:10px}
+.item{display:flex;justify-content:space-between;gap:10px;padding:7px 0}
+.total{font-size:1.1rem;font-weight:800;border-top:1px solid #ddd;padding-top:10px;margin-top:8px}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.actions button{background:#262321;color:#fff}
+.actions button.active{outline:3px solid #d9a441}
+.empty{text-align:center;padding:60px 20px;background:#fff;border-radius:14px}
+small{color:#666}
+.error{padding:15px;background:#fff0f0;border:1px solid #e2a5a5;border-radius:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-row">
+    <div><h1>🍽️ Gullu ka Restaurant</h1><div class="live">Live Restaurant Order Dashboard</div></div>
+    <button id="logoutBtn" onclick="signOutStaff()" hidden>Log out</button>
+  </div>
+</header>
+
+<div id="loginScreen" class="login-wrap" hidden>
+  <h2>Staff Login</h2>
+  <p>Sign in with the restaurant's staff account to view live orders.</p>
+  <label for="loginEmail">Email</label>
+  <input type="email" id="loginEmail" autocomplete="username">
+  <label for="loginPassword">Password</label>
+  <input type="password" id="loginPassword" autocomplete="current-password">
+  <button onclick="signInStaff()">Sign In</button>
+  <div class="login-error" id="loginError"></div>
+</div>
+
+<main id="dashboardMain" hidden>
+<div class="toolbar"><div><h2>Orders</h2><small id="count">Connecting to Firebase…</small></div><button class="refresh" onclick="loadOnce()">↻ Refresh</button></div>
+<div id="orders" class="grid"></div>
+</main>
+<script>
+const firebaseConfig={
+  apiKey:"AIzaSyDqB1L7hXeCqkUkM6U-TpQLzgP2vaR3GZI",
+  authDomain:"gullu-ka-restaurant.firebaseapp.com",
+  projectId:"gullu-ka-restaurant",
+  storageBucket:"gullu-ka-restaurant.firebasestorage.app",
+  messagingSenderId:"1006186898990",
+  appId:"1:1006186898990:web:569a24ca4c6092acb7e1bf"
+};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const auth=firebase.auth();
+const statuses=['New','Confirmed','Preparing','Ready','Completed'];
+
+function signInStaff(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  const errEl=document.getElementById('loginError');
+  errEl.textContent='';
+  auth.signInWithEmailAndPassword(email,password).catch(e=>{errEl.textContent=e.message;});
+}
+function signOutStaff(){ auth.signOut(); }
+
+auth.onAuthStateChanged(user=>{
+  const loginScreen=document.getElementById('loginScreen');
+  const dashboardMain=document.getElementById('dashboardMain');
+  const logoutBtn=document.getElementById('logoutBtn');
+  if(user){
+    loginScreen.hidden=true;
+    dashboardMain.hidden=false;
+    logoutBtn.hidden=false;
+    subscribe();
+  } else {
+    loginScreen.hidden=false;
+    dashboardMain.hidden=true;
+    logoutBtn.hidden=true;
+  }
+});
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function money(n){return '₹'+Number(n||0).toFixed(2);}
+function timeOf(ts){if(!ts)return 'Just now';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleString();}
+function renderOrders(orders){
+ document.getElementById('count').textContent=orders.length+' order(s) • LIVE';
+ const el=document.getElementById('orders');
+ if(!orders.length){el.innerHTML='<div class="empty">No orders yet.<br><br>Place a test order from the customer website.</div>';return;}
+ el.innerHTML=orders.map(o=>`
+ <article class="card">
+  <h3>${esc(o.orderId)}</h3>
+  <span class="status ${esc(o.status)}">${esc(o.status)}</span>
+  <div><b>${esc(o.customerName)}</b> · ${esc(o.customerPhone)}</div>
+  <div>${esc(o.orderType)}${o.deliveryAddress?'<br>'+esc(o.deliveryAddress):''}</div>
+  <small>${timeOf(o.createdAt)}</small>
+  <div class="items">${(o.items||[]).map(x=>`<div class="item"><span>${esc(x.name)} × ${x.qty}</span><b>${money(x.lineTotal??x.qty*x.price)}</b></div>`).join('')}</div>
+  <div>Subtotal: ${money(o.subtotal)}</div>
+  <div>GST @ 18%: ${money(o.gst)}</div>
+  <div class="total">TOTAL: ${money(o.total)}</div>
+  ${o.note?'<p><b>Special instructions:</b> '+esc(o.note)+'</p>':''}
+  <div class="actions">${statuses.map(s=>`<button class="${o.status===s?'active':''}" onclick="setStatus('${esc(o.orderId)}','${s}')">${s}</button>`).join('')}</div>
+ </article>`).join('');
+}
+function subscribe(){
+ db.collection('orders').orderBy('createdAt','desc').limit(100).onSnapshot(
+  snap=>renderOrders(snap.docs.map(d=>d.data())),
+  err=>{console.error(err);document.getElementById('count').textContent='Firebase connection error';document.getElementById('orders').innerHTML='<div class="error"><b>Could not read orders.</b><br>'+esc(err.message)+'</div>';}
+ );
+}
+async function setStatus(orderId,status){
+ try{await db.collection('orders').doc(orderId).update({status,statusUpdatedAt:firebase.firestore.FieldValue.serverTimestamp()});}
+ catch(e){alert('Could not update status: '+e.message);}
+}
+async function loadOnce(){
+ try{const snap=await db.collection('orders').orderBy('createdAt','desc').limit(100).get();renderOrders(snap.docs.map(d=>d.data()));}
+ catch(e){alert('Could not load orders: '+e.message);}
+}
+</script>
+</body>
+</html>
